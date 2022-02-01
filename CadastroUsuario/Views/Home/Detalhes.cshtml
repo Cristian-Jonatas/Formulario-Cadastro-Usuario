@@ -1,0 +1,87 @@
+﻿@model CadastroUsuarioViewModel
+
+@{
+    ViewData["Title"] = "Detalhes do Usuário";
+}
+
+@section Styles{
+    <style>
+        fieldset.grupBox {
+            border: 1px solid #ddd !important;
+            padding: 0 1.4em 1.4em 1.4em !important;
+            margin: 1em 0 1.5em 0 !important;
+            -webkit-box-shadow: 0px 0px 0px 0px #000;
+            box-shadow: 0px 0px 0px 0px #000;
+        }
+
+        legend.grupBox {
+            font-size: 1.2em !important;
+            font-weight: bold !important;
+            text-align: left !important;
+            width: auto !important;
+            padding: 0 6px;
+        }
+    </style>
+}
+
+<div class="col-12">
+    <h4>@ViewData["Title"]</h4>
+    <fieldset class="grupBox">
+        <legend class="grupBox">Dados de usuário </legend>
+        <div class="col-12">
+            <div class="col-11">
+                <label asp-for="Nome">Nome Completo</label>
+                <input class="form-control" type="text" asp-for="Nome" value="@Model.Nome" readonly />
+            </div>
+            <div class="col-11 row"style="padding-right:0">
+                <div class="col-6" style="margin:0">
+                    <label asp-for="DataNascimento">Data de Nascimento</label>
+                    <input class="form-control" type="text" asp-for="DataNascimento" value="@Model.DataNascimento" readonly />
+                </div>
+                <div class="col-6" style="padding-right:0">
+                    <label asp-for="CPF">CPF</label>
+                    <input class="form-control" type="text" maxlength="14" asp-for="CPF" value="@Model.CPF" readonly />
+                </div>
+            </div>
+            <div class="col-11">
+                <label asp-for="Email">Email</label>
+                <input class="form-control" type="text" asp-for="Email" value="@Model.Email" readonly />
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="grupBox">
+        <legend class="grupBox">Dados de endereço </legend>
+        <div class="col-12">
+            <div class="col-3">
+                <label asp-for="CEP">CEP</label>
+                <input class="form-control" maxlength="10" type="text" asp-for="CEP" value="@Model.CEP" readonly />
+            </div>
+            <div class="col-11">
+                <label asp-for="Logradouro">Logradouro</label>
+                <input class="form-control" type="text" asp-for="Logradouro" value="@Model.Logradouro" readonly />
+            </div>
+            <div class="col-11">
+                <label asp-for="Complemento">Complemento</label>
+                <input class="form-control" type="text" asp-for="Complemento" value="@Model.Complemento" readonly />
+            </div>
+            <div class="col-11">
+                <label asp-for="Bairro">Bairro</label>
+                <input class="form-control" type="text" asp-for="Bairro" value="@Model.Bairro" readonly />
+            </div>
+            <div class="col-11">
+                <label asp-for="Cidade">Cidade</label>
+                <input class="form-control" type="text" asp-for="Cidade" value="@Model.Cidade" readonly />
+            </div>
+            <div class="col-11">
+                <label asp-for="Estado">Estado</label>
+                <input class="form-control" type="text" asp-for="Estado" value="@Model.Estado" readonly />
+            </div>
+        </div>
+    </fieldset>
+</div>
+@section scripts {
+    <script type="text/javascript">
+
+    </script>
+}

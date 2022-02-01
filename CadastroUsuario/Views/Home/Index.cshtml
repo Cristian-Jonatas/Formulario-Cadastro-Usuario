@@ -1,0 +1,32 @@
+﻿@model Dictionary<int, string>
+@{ ViewData["Title"] = "Home Page"; }
+
+@section Styles{
+    <style>
+        .lista {
+            border-bottom: 1px solid #ddd;
+            padding: 6px;
+        }
+    </style>
+}
+<div class="text-center">
+    <h1 class="">Usuários cadastrados</h1>
+</div>
+<div class="col-10 offset-sm-2" style="margin-top:30px">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+<div class="col-12 lista">
+    <a href="/Detalhes/@item.Key ">@item.Value</a>
+    <button id="excluir" class="btn btn-danger" data-id="@item.Key" style="float:right">Excluir</button>
+</div>}
+    </div>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+        var UrlHome = {
+            ExcluirUsuario: "@Url.Action("Excluir","Home")",
+            };
+    </script>
+}
