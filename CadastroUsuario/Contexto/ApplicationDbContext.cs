@@ -14,6 +14,8 @@ namespace CadastroUsuario
                 u.Property(u => u.Email).HasMaxLength(250).IsRequired();
                 u.Property(u => u.CPF).HasMaxLength(20).IsRequired();
                 u.Property(u => u.DataNascimento).IsRequired();
+
+                u.HasMany(e => e.Enderecos).WithOne().IsRequired();
             });
 
             modelBuilder.Entity<Endereco>(e =>
@@ -26,7 +28,6 @@ namespace CadastroUsuario
                 e.Property(e => e.Bairro).HasMaxLength(250).IsRequired();
                 e.Property(e => e.Cidade).HasMaxLength(250).IsRequired();
                 e.Property(e => e.Estado).HasMaxLength(20).IsRequired();
-                e.Property(e => e.IdUsuario).HasColumnType("int").IsRequired();
             });
         }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)

@@ -9,6 +9,5 @@
         public string Bairro { get; set; }
         public string Cidade { get; set; }
         public string Estado { get; set; }
-        public int IdUsuario { get; set; }
     }
 }

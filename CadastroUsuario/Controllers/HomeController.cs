@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace CadastroUsuario
 {
@@ -31,8 +32,8 @@ namespace CadastroUsuario
         [Route("/Detalhes/{idUsuario}")]
         public IActionResult Detalhes(int idUsuario)
         {
-            var usuario = dbContext.Usuario.Where(x => x.Id == idUsuario).FirstOrDefault();
-            var endereco = dbContext.Endereco.Where(x => x.IdUsuario == idUsuario).FirstOrDefault();
+            var usuario = dbContext.Usuario.Where(x => x.Id == idUsuario).Include(x => x.Enderecos).FirstOrDefault();
+            var endereco = usuario.Enderecos.FirstOrDefault();
             var model = new CadastroUsuarioViewModel()
             {
                 Nome = usuario.Nome,
@@ -60,36 +61,31 @@ namespace CadastroUsuario
         public async Task<IActionResult> Registro(CadastroUsuarioViewModel formulario)
         {
             var ret = false;
-            try
+
+            var usuario = new Usuario()
             {
-                var usuario = new Usuario()
+                Nome = formulario.Nome,
+                DataNascimento = DateTime.Parse(formulario.DataNascimento),
+                Email = formulario.Email,
+                CPF = formulario.CPF,
+                Enderecos = new List<Endereco>
                 {
-                    Nome = formulario.Nome,
-                    DataNascimento = DateTime.Parse(formulario.DataNascimento),
-                    Email = formulario.Email,
-                    CPF = formulario.CPF
-                };
-                await dbContext.Usuario.AddAsync(usuario);
-                await dbContext.SaveChangesAsync();
+                    new Endereco
+                    {
+                        CEP = formulario.CEP,
+                        Logradouro = formulario.Logradouro,
+                        Complemento = formulario.Complemento,
+                        Bairro = formulario.Bairro,
+                        Cidade = formulario.Cidade,
+                        Estado = formulario.Estado,
+                    }
+                }
+            };
+            dbContext.Usuario.Add(usuario);
 
-                var endereco = new Endereco()
-                {
-                    CEP = formulario.CEP,
-                    Logradouro = formulario.Logradouro,
-                    Complemento = formulario.Complemento,
-                    Bairro = formulario.Bairro,
-                    Cidade = formulario.Cidade,
-                    Estado = formulario.Estado,
-                    IdUsuario = usuario.Id
-                };
-
-                await dbContext.Endereco.AddAsync(endereco);
-                await dbContext.SaveChangesAsync();
+            if (await dbContext.SaveChangesAsync() > 0)
+            {
                 ret = true;
-            }
-            catch (Exception ex)
-            {
-                throw;
             }
 
             return Json(ret);
@@ -99,23 +95,15 @@ namespace CadastroUsuario
         public async Task<IActionResult> Excluir(int id)
         {
             var ret = false;
-            try
+            var usuario = dbContext.Usuario.Where(x => x.Id == id).FirstOrDefault();
+            if (usuario != null)
             {
-                var usuario = dbContext.Usuario.Where(x => x.Id == id).FirstOrDefault();
-                if (usuario != null)
-                {
-                    dbContext.Usuario.Remove(usuario);
-                    await dbContext.SaveChangesAsync();
-                }
+                dbContext.Usuario.Remove(usuario);
+                await dbContext.SaveChangesAsync();
                 ret = true;
             }
-            catch (Exception ex)
-            {
 
-                throw;
-            }
             return Json(ret);
         }
-
     }
 }
